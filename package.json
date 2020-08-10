@@ -1,0 +1,22 @@
+{
+  "name": "nodejpegs",
+  "version": "1.0.0",
+  "description": "JPEG image creation with Node",
+  "main": "jpeg.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wilder101/NodeJPEGs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wilder101/NodeJPEGs/issues"
+  },
+  "homepage": "https://github.com/Wilder101/NodeJPEGs#readme",
+  "dependencies": {
+    "jpeg-js": "^0.4.1"
+  }
+}
