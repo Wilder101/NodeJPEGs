@@ -1,7 +1,7 @@
 // 8/10/20
 // Node JPEGs -- image creation using Node
 
-// npm init -- initializer actally not required, yet is explicit for Node.js use
+// npm init -y -- initializer actally not required, yet is explicit for Node.js use
 // npm install jpeg-js
 
 // Encoding JEPGs
@@ -23,8 +23,22 @@ const width  = 640,
 // Set maximum number of color values (256 total via 0 - 255)
 const MAX = 255;
 
-// Set image frame data
-var frameData = new Buffer.alloc(width * height * 4);     
+// Set-up image frame data
+var frameData = new Buffer.alloc(width * height * 4);   
+
+// Raw image data for frame data
+var rawImageData = {
+    data: frameData,
+    width: width,
+    height: height,
+  };
+
+// Create two dimensional array to represent an image
+let picArray = [[]];
+picArray.pop();         // Initialze to empty
+
+// Timing variables, uninitialized
+let start, end, millisecondsElapsed;
 
 // Pixel object constructor function
 function Pixel (red, green, blue) {
@@ -32,10 +46,6 @@ function Pixel (red, green, blue) {
     this.Gcolor = green;
     this.Bcolor = blue;
 }
-
-// Create two dimensional array to represent an image
-let picArray = [[]];
-picArray.pop();         // Initialzed to empty
 
 // Initialize to black
 function initializePicArray(rows, cols) {
@@ -50,9 +60,8 @@ function initializePicArray(rows, cols) {
         for (let j = 0; j < cols; j++) {
 
             // Create new object to push
-            let newObject = new Pixel(0, 0, 0);
+            let newObject = new Pixel(0, 0, 0);     // RGB values set to zero
 
-            // HYPOTHESIS: THE SAME OBJECT IS BEING PUSHED TO THE ARRAY; THIS NEED TO BE A NEW OBJECT EACH TIME!!!
             // Push the new pixel object to the column array
             inner.push(newObject);                          
         }
@@ -62,14 +71,12 @@ function initializePicArray(rows, cols) {
     }
 }
 
-let start = new Date();
+// Set-up picture array
+start = new Date();
 initializePicArray(height, width);
-let end = new Date();
-let millisecondsElapsed = end - start;
+end = new Date();
+millisecondsElapsed = end - start;
 console.log("Pic initialization took " + millisecondsElapsed + " ms");
-
-
-//console.log(initializePicArray);
 
 // Random integer refresher: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 //console.log(getRandomInt(3));
@@ -81,15 +88,8 @@ function getRandomInt(max) {
 // Assign colors to each image pixel function -- random for now
 function assignColors () {
 
-    // Create a temporary pixel -- be careful to not use by reference
-    // let tempPixel = {
-    //     Rcolor: 0,      // red current color
-    //     Gcolor: 0,      // green current color
-    //     Bcolor: 0       // blue current color
-    // };
-
-    for (let i = 0; i < height; i++) {
-        for (let j = 0; j < width; j++) {
+    for (let i = 0; i < height; i++) {          // rows
+        for (let j = 0; j < width; j++) {       // columns
 
             picArray[i][j].Rcolor = getRandomInt(MAX + 1);
             picArray[i][j].Gcolor = getRandomInt(MAX + 1);
@@ -98,7 +98,7 @@ function assignColors () {
     }
 }
 
-// Assign colors function call
+// Assign colors
 start = new Date();
 assignColors();
 end = new Date();
@@ -125,13 +125,6 @@ while (frameIterator < frameData.length) {
         }
     }
 }
-
-// Image data
-var rawImageData = {
-  data: frameData,
-  width: width,
-  height: height,
-};
 
 // Encode image and log buffer data
 var jpegImageData = jpeg.encode(rawImageData, 50);
