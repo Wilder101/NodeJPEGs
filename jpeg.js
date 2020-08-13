@@ -6,6 +6,10 @@
 
 // Encoding JEPGs
 
+// Color reference:
+// https://enchantia.com/software/graphapp/doc/tutorial/colours.htm
+// frameData color can be in hexadecimal (0x00 - 0xFF) or integer values (0-255)
+
 // Require jpeg-js npm package
 var jpeg = require('jpeg-js');
 
@@ -16,15 +20,11 @@ fs = require('fs');
 const width  = 640,
       height = 320;
 
-// Set maximum number of color values (256 total via 0 - 255 values)
+// Set maximum number of color values (256 total via 0 - 255)
 const MAX = 255;
 
 // Set image frame data
 var frameData = new Buffer.alloc(width * height * 4);     
-
-// Color reference:
-// https://enchantia.com/software/graphapp/doc/tutorial/colours.htm
-// frameData color can be in hexadecimal (0x00 - 0xFF) or integer values (0-255)
 
 // Pixel object constructor function
 function Pixel (red, green, blue) {
@@ -53,16 +53,23 @@ function initializePicArray(rows, cols) {
             let newObject = new Pixel(0, 0, 0);
 
             // HYPOTHESIS: THE SAME OBJECT IS BEING PUSHED TO THE ARRAY; THIS NEED TO BE A NEW OBJECT EACH TIME!!!
+            // Push the new pixel object to the column array
             inner.push(newObject);                          
         }
 
-        // Push the inner array into the outer array element
+        // Push the entire inner column array into the outer rows array element
         picArray.push(inner);
     }
 }
 
+let start = new Date();
 initializePicArray(height, width);
-console.log(initializePicArray);
+let end = new Date();
+let millisecondsElapsed = end - start;
+console.log("Pic initialization took " + millisecondsElapsed + " ms");
+
+
+//console.log(initializePicArray);
 
 // Random integer refresher: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 //console.log(getRandomInt(3));
@@ -71,7 +78,7 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
   
-// Assign colors to each image pixel function
+// Assign colors to each image pixel function -- random for now
 function assignColors () {
 
     // Create a temporary pixel -- be careful to not use by reference
@@ -92,12 +99,16 @@ function assignColors () {
 }
 
 // Assign colors function call
+start = new Date();
 assignColors();
+end = new Date();
+millisecondsElapsed = end - start;
+console.log("Color assignment took " + millisecondsElapsed + " ms");
 
 // Test the image array
-console.log(picArray[0][0]);
-console.log(picArray[height / 2][width / 2]);
-console.log(picArray[height - 1][width - 1]);
+// console.log(picArray[0][0]);
+// console.log(picArray[height / 2][width / 2]);
+// console.log(picArray[height - 1][width - 1]);
 
 // frameData iterator & iterate through assigning framedata RBG values
 var frameIterator = 0;
