@@ -41,11 +41,20 @@ picArray.pop();         // Initialze to empty
 let start, end, millisecondsElapsed;
 
 // Pixel object constructor function
-function Pixel (red, green, blue) {
-    this.Rcolor = red;
-    this.Gcolor = green;
-    this.Bcolor = blue;
-}
+// function Pixel(red, green, blue) {
+//     this.Rcolor = red;
+//     this.Gcolor = green;
+//     this.Bcolor = blue;
+// }
+
+// Pixel object
+class Pixel {
+    constructor(red, green, blue) {
+        this.Rcolor = red;
+        this.Gcolor = green;
+        this.Bcolor = blue;
+    };
+};
 
 // Initialize to black
 function initializePicArray(rows, cols) {
